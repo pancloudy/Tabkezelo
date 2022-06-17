@@ -161,7 +161,7 @@ public:
                     //iterator.insert(cells.begin(), string, fa);
                     //cells.insert(cells.begin() + row, fa);
 
-                    //cells.insert(cells.begin() + row, tmp);
+                    cells.insert(cells.begin() + row, tmp);
                     int lo = 0;
                     lo++;
                     cout << "futasi ido:  " << lo;
