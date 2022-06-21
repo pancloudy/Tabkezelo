@@ -125,69 +125,36 @@ public:
         print();
     }
     void newRowsBA(int number, bool isbefore, int row) {
-        int newRowCount = number;
+        /*int newRowCount = number;
         int oldRowCount = rowCount;
         rowCount += newRowCount;
-        cells.resize(rowCount+1);
-        
-        int i = 0;
+        cells.resize(rowCount);*/
         vector<string> tmp(row);
-        //string  fa = " o ";
-        //tmp.push_back(fa);
-        //vector<vector<string>::iterator > it;
-        cout << colCount << " " << rowCount;
 
         if (isbefore) {
-
-
-
-            for (int i = oldRowCount; i < cells.size(); i++) {
-                for (int j = 0; j < colCount; j++)
-                {
-                    //auto it = cells.begin();
-
-                    /*vector<string> seged;
-                    for (auto it : seged) {
-                        it.push_back(fa[0]);
-                    }*/
-                    //seged.push_back(fa);
-                    //myvector.push_back(fa);
-                    //cells.insert(it + row-1, iterator.begin(), iterator.end());
-                    /*it = cells.begin();
-                    it = cells.insert(it, 200);*/
-                    //auto it = cells.insert(cells.begin(), fa);
-                    //cells.insert(it, 2, 300);
-                    //cells.insert(cells.begin() + row, seged.begin(),seged.end());
-                    //iterator.insert(cells.begin(), string, fa);
-                    //cells.insert(cells.begin() + row, fa);
-
-                    cells.insert(cells.begin() + row, tmp);
-                    int lo = 0;
-                    lo++;
-                    cout << "futasi ido:  " << lo;
-                    //vegtelen ciklus
-                }
+            for (int j = 0; j < colCount; j++) {
+                tmp.push_back(" A ");
             }
-
+            cells.insert(cells.begin() + number, rowCount, tmp);
+            rowCount += number;
+            for(int i  = 1; i < rowCount; i++){
+                string iTostring = "B" + to_string(i);
+                cells[i][0] = iTostring;
+            }
         }
         else {
-
-            for (int i = row; i < cells.size(); i++) {
-                for (int j = 0; j < colCount; j++)
-                {
-                    string fa = " o ";
-                    int index;
-
-
-                    //nem mukodik
-                    //it.insert(it.begin() + row, fa);
-
-
-
-                }
+            
+            for (int j = 1; j < colCount; j++) {
+                tmp.push_back(" L ");
+            }
+            cells.insert(cells.begin() + (number + 1), rowCount, tmp);
+            rowCount += number;
+            for (int i = 0; i < row; i++) {
+                string iToString = "L" + to_string(i);
+                cells[i][0] = iToString;
             }
 
-        }
+         }
 
 
         print();
@@ -230,7 +197,9 @@ int main()
         cout << "exit\n";
         getline(cin, input);
 
-
+        if (input.find("print") != string::npos) {
+            fv.print();
+        }
         //edit
 
 
@@ -296,7 +265,8 @@ int main()
 
             if (input.find("before") != string::npos) {
                 isbefore = true;
-                XOrY = input.substr(21);
+                //XOrY = input.substr(21);
+                XOrY = input.back();
                 if (isdigit(XOrY[0])) {
                     int col = stoi(XOrY);
 
@@ -309,7 +279,8 @@ int main()
             }
             if (input.find("after") != string::npos) {
                 isbefore = false;
-                XOrY = input.substr(20);
+                //XOrY = input.substr(20);
+                XOrY = input.back();
                 if (isdigit(XOrY[0])) {
                     int col = stoi(XOrY);
                     fv.newRowsBA(number, isbefore, col);
