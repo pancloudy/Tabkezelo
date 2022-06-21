@@ -25,18 +25,22 @@ public:
     {
         cout << setw(5);
         for (int i = 0; i < colCount; i++) {
-            cout << char(i + 65) << setw(5);
+            if (i == 0) {
+                cout << setw(10);
+                cout << char(i + 65) << setw(5);
+            }
+            else cout << char(i + 65) << setw(5);
         }
-        cout << "\n";
+        cout << setw(5) << endl;
         for (int i = 0; i < rowCount; i++)
         {
             cout << i + 1 << setw(5);
             for (int j = 0; j < colCount; j++)
             {
-                cout << cells[i][j] << "\t";
+                cout << cells[i][j] << setw(5);
             }
             cout << endl;
-            //cout << endl;
+            
         }
     }
     /*void beker() {
@@ -87,7 +91,7 @@ public:
         for (int i = oldRowCount; i < cells.size(); i++) {
             for (int j = 0; j < colCount; j++)
             {
-                cells[i].push_back(" a ");
+                cells[i].push_back("a");
             }
         }
         print();
@@ -100,18 +104,18 @@ public:
         for (auto it : cells)
         {
             for (int j = oldColCount; j < colCount; j++) {
-                string temp = " a ";
+                string temp = "a";
                 it.push_back(temp);
             }
             cells[i] = it;
             i++;
-            cout << "";
+            //cout << "";
         }
         for (int i = 0; i < cells.size(); i++)
         {
             cells[i].resize(colCount);
             for (int j = oldColCount; j < colCount; j++) {
-                string temp = " a ";
+                string temp = "a";
             }
         }
         print();
@@ -133,25 +137,23 @@ public:
 
         if (isbefore) {
             for (int j = 0; j < colCount; j++) {
-                tmp.push_back(" A ");
+                tmp.push_back("A");
             }
             cells.insert(cells.begin() + number, rowCount, tmp);
             rowCount += number;
             for(int i  = 1; i < rowCount; i++){
-                string iTostring = "B" + to_string(i);
-                cells[i][0] = iTostring;
+                cells[i][0] = "B";
             }
         }
         else {
             
             for (int j = 1; j < colCount; j++) {
-                tmp.push_back(" L ");
+                tmp.push_back("A");
             }
             cells.insert(cells.begin() + (number + 1), rowCount, tmp);
             rowCount += number;
             for (int i = 0; i < row; i++) {
-                string iToString = "L" + to_string(i);
-                cells[i][0] = iToString;
+                cells[i][0] = "B";
             }
 
          }
