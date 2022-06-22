@@ -15,8 +15,8 @@ public:
     vector<vector<string> > cells;
     vector<vector<string>::iterator > it;
     fuggvenyek() {
-        this->rowCount = 0;
-        this->colCount = 0;
+        this->rowCount = 1;
+        this->colCount = 1;
         this->cells.resize(rowCount, vector<string>(colCount));
         //cells[0][0] = "";
 
@@ -26,19 +26,42 @@ public:
         cout << setw(5);
         for (int i = 0; i < colCount; i++) {
             if (i == 0) {
-                cout << setw(10);
-                cout << char(i + 65) << setw(5);
+                cout << setw(9);
+                cout << char(i + 65) << "|" << setw(5);
             }
-            else cout << char(i + 65) << setw(5);
+            else cout << char(i + 65) << "|" << setw(5);
+            
         }
-        cout << setw(5) << endl;
+        
+        cout << endl;
+        for (int i = 0; i < colCount; i++) {
+            cout << "------";
+        }
+        cout << "----";
+        cout << endl;
+        //cout << setw(5) << endl;
+        
         for (int i = 0; i < rowCount; i++)
         {
-            cout << i + 1 << setw(5);
+            if (i + 1 >= 10) {
+                if (i + 1 >= 100) {
+                    cout << i + 1 << "|" << setw(5);
+                }
+                else cout << i + 1 << " |" << setw(5);
+            }
+            
+            else cout << i + 1 << "  |" << setw(5);
+            //cout << "----------------------------------------------";
+            //cout << endl;
             for (int j = 0; j < colCount; j++)
             {
-                cout << cells[i][j] << setw(5);
+                cout << cells[i][j] << "|" << setw(5);
             }
+            cout << endl;
+            for (int i = 0; i < colCount; i++) {
+                cout << "------";
+            }
+            cout << "----";
             cout << endl;
             
         }
@@ -164,10 +187,35 @@ public:
 
     }
 
-    void newColsBA(int number, bool isbefore, string col) {
-
-
-
+    void newColsBA(int number, bool isbefore, char col) {
+        
+        int location = col - 'A';
+        if (isbefore) {
+            for (int i = 0; i < rowCount; i++) {
+                cells[i].insert(cells[i].begin() + location + 1, number, "L ");
+            }
+            colCount += col;
+            for (int k = 0; k < col; k++) {
+                if (k != 0) {
+                    string x(1, 'A' + (k - 1));
+                    cells[0][k] = "L" + x;
+                }
+            }
+        }
+        else {
+            for (int i = 0; i < rowCount; i++) {
+                cells[i].insert(cells[i].begin() + (location + 2), number, "L ");
+            }
+            colCount += col;
+            for (int k = 0; k < col; k++) {
+                if (k != 0) {
+                    string x(1, 'A' + (k - 1));
+                    cells[0][k] = "L" + x;
+                }
+            }
+        }
+        
+        print();
 
     }
     void CSV_read(string inpfile, char sep) {
@@ -189,6 +237,7 @@ int main()
 {
     fuggvenyek fv;
     string input;
+    fv.print();
     while (input != "exit")
     {
         cout << "Available commands:\n";
@@ -275,8 +324,8 @@ int main()
                     fv.newRowsBA(number, isbefore, col);
                 }
                 else {
-
-                    fv.newColsBA(number, isbefore, XOrY);
+                    char col2 = XOrY[0];
+                    fv.newColsBA(number, isbefore, col2);
                 }
             }
             if (input.find("after") != string::npos) {
@@ -288,7 +337,8 @@ int main()
                     fv.newRowsBA(number, isbefore, col);
                 }
                 else {
-                    fv.newColsBA(number, isbefore, XOrY);
+                    char col2 = XOrY[0];
+                    fv.newColsBA(number, isbefore, col2);
                 }
             }
 
