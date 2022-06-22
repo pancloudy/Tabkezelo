@@ -18,24 +18,48 @@ public:
         this->rowCount = 1;
         this->colCount = 1;
         this->cells.resize(rowCount, vector<string>(colCount));
-        //cells[0][0] = "";
+        cells[0][0] = " ";
 
     }
     void print()
     {
+        //legszelesebb cella
+        int biggest = 0;
+        int seged = 0;
+        for (int i = 0;i < rowCount;i++) {
+            for (int j = 0; j < colCount; j++)
+            {
+                if (cells[i][j].length() > biggest) {
+                    biggest = cells[i][j].length();
+                }
+            }
+        }
+
         cout << setw(5);
         for (int i = 0; i < colCount; i++) {
             if (i == 0) {
-                cout << setw(9);
-                cout << char(i + 65) << "|" << setw(5);
+                cout << setw(4);
+                cout << "|"  << char(i + 65)  << setw(biggest);
+                if (i == colCount - 1)
+                {
+                    cout << "|";
+                }
             }
-            else cout << char(i + 65) << "|" << setw(5);
+            
+            else {
+                
+                cout << "|" << char(i + 65) << setw(biggest);
+                if (i == colCount - 1)
+                {
+                    cout << "|";
+                }
+            }
             
         }
         
-        cout << endl;
-        for (int i = 0; i < colCount; i++) {
-            cout << "------";
+        cout << '\n';
+        for (int i = 0; i < colCount*(biggest+1); i++) {
+            cout << "-";
         }
         cout << "----";
         cout << endl;
@@ -45,21 +69,34 @@ public:
         {
             if (i + 1 >= 10) {
                 if (i + 1 >= 100) {
-                    cout << i + 1 << "|" << setw(5);
+                    cout << i + 1 << "|"  ;
                 }
-                else cout << i + 1 << " |" << setw(5);
+                else cout << i + 1 << " |"   ;
             }
             
-            else cout << i + 1 << "  |" << setw(5);
+            else cout << i + 1 << "  |"  ;
             //cout << "----------------------------------------------";
             //cout << endl;
             for (int j = 0; j < colCount; j++)
             {
-                cout << cells[i][j] << "|" << setw(5);
+                if (j == 0) {
+                    if (cells[i][j].length() != biggest) {
+                        seged = biggest+1 - cells[i][j].length();
+                    }
+                    else seged = 0;
+                    cout << cells[i][j] << setw(seged);
+                }
+                else {
+                    if (cells[i][j].length() != biggest) {
+                        seged = biggest+1 - cells[i][j].length();
+                    }
+                    else seged = 0;
+                    cout << "|" << cells[i][j] << setw(seged);
+                }
             }
-            cout << endl;
-            for (int i = 0; i < colCount; i++) {
-                cout << "------";
+            cout << "|" << '\n';
+            for (int i = 0; i < colCount*(biggest+1); i++) {
+                cout << "-";
             }
             cout << "----";
             cout << endl;
