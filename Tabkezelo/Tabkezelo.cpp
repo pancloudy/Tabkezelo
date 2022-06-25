@@ -184,7 +184,7 @@ public:
 
         string inp;
         cout << "Adja meg az adatot amire megakarja valtoztatni: \n";
-        cin >> inp;
+        getline(cin, inp);
         cells[y - 1][x] = inp;
         print();
     }
@@ -229,7 +229,7 @@ public:
         int location = col - 'A';
         if (isbefore) {
             for (int i = 0; i < rowCount; i++) {
-                cells[i].insert(cells[i].begin() + location + 1, number, "L ");
+                cells[i].insert(cells[i].begin() + location+1, number, "L ");
             }
             colCount += col;
             for (int k = 0; k < col; k++) {
@@ -258,16 +258,34 @@ public:
     void CSV_read(string inpfile, char sep) {
         ifstream f(inpfile);
         string sor;
-        int i = 0;
+        int counter = 0;
+       
 
         if (f.is_open()) {
             while (getline(f, sor, sep)) {
+                counter++;
 
             }
         }
-        else
-            cout << "Could not open the file\n";
+        else cout << "Could not open the file\n";
+        vector<string> tmp(counter);
 
+    }
+
+    void CSV_save(string filename, char sep) {
+        ofstream out;
+        out.open(filename);
+        
+        for (int i = 0; i < rowCount; i++)
+        {
+            for (int j = 0; j < colCount; j++)
+            {
+                out << cells[i][j] << sep;
+            }
+            out << "\n";
+            
+        }
+        out.close();
     }
 };
 int main()
@@ -407,7 +425,25 @@ int main()
             }
 
         }
-
+        if (input.find("save") != string::npos) {
+            char sep = ';';
+            char space_char = ' ';
+            vector<string> words{};
+            stringstream sstream(input);
+            string word;
+            if (input.find("-sep") != string::npos) {
+                sep = input.back();
+            }
+            while (getline(sstream, word, space_char)) {
+               // word.erase(std::remove_if(word.begin(), word.end()), word.end());
+                words.push_back(word);
+            }
+            string file = words[1];
+            
+            
+            fv.CSV_save(file, sep);
+        }
+        
     }
     cout << "Terminated";
     return 0;
