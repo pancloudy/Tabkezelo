@@ -151,7 +151,7 @@ public:
         for (int i = oldRowCount; i < cells.size(); i++) {
             for (int j = 0; j < colCount; j++)
             {
-                cells[i].push_back("a");
+                cells[i].push_back("");
             }
         }
         print();
@@ -164,7 +164,7 @@ public:
         for (auto it : cells)
         {
             for (int j = oldColCount; j < colCount; j++) {
-                string temp = "a";
+                string temp = "";
                 it.push_back(temp);
             }
             cells[i] = it;
@@ -175,7 +175,7 @@ public:
         {
             cells[i].resize(colCount);
             for (int j = oldColCount; j < colCount; j++) {
-                string temp = "a";
+                string temp = "";
             }
         }
         print();
@@ -189,32 +189,24 @@ public:
         print();
     }
     void newRowsBA(int number, bool isbefore, int row) {
-        /*int newRowCount = number;
-        int oldRowCount = rowCount;
-        rowCount += newRowCount;
-        cells.resize(rowCount);*/
         vector<string> tmp(row);
 
         if (isbefore) {
             for (int j = 0; j < colCount; j++) {
-                tmp.push_back("A");
+                tmp.push_back("");
             }
-            cells.insert(cells.begin() + number, rowCount, tmp);
+            cells.insert(cells.begin() + (row-1), number, tmp);
             rowCount += number;
-            for(int i  = 1; i < rowCount; i++){
-                cells[i][0] = "B";
-            }
+            
         }
         else {
             
             for (int j = 1; j < colCount; j++) {
-                tmp.push_back("A");
+                tmp.push_back("");
             }
-            cells.insert(cells.begin() + (number + 1), rowCount, tmp);
+            cells.insert(cells.begin() + (row), number, tmp);
             rowCount += number;
-            for (int i = 0; i < row; i++) {
-                cells[i][0] = "B";
-            }
+            
 
          }
 
@@ -229,25 +221,23 @@ public:
         int location = col - 'A';
         if (isbefore) {
             for (int i = 0; i < rowCount; i++) {
-                cells[i].insert(cells[i].begin() + location+1, number, "L ");
+                cells[i].insert(cells[i].begin() + location-1, number, "");
             }
-            colCount += col;
-            for (int k = 0; k < col; k++) {
+            colCount += number;
+            for (int k = 0; k < colCount; k++) {
                 if (k != 0) {
-                    string x(1, 'A' + (k - 1));
-                    cells[0][k] = "L" + x;
+                    cells[0][k] = "";
                 }
             }
         }
         else {
             for (int i = 0; i < rowCount; i++) {
-                cells[i].insert(cells[i].begin() + (location + 2), number, "L ");
+                cells[i].insert(cells[i].begin() + location+1, number, "");
             }
-            colCount += col;
-            for (int k = 0; k < col; k++) {
+            colCount += number;
+            for (int k = 0; k < colCount; k++) {
                 if (k != 0) {
-                    string x(1, 'A' + (k - 1));
-                    cells[0][k] = "L" + x;
+                    cells[0][k] = "";
                 }
             }
         }
@@ -256,18 +246,17 @@ public:
 
     }
     void CSV_read(string inpfile, char sep) {
-        ifstream f(inpfile);
-        string sor;
+        ifstream f;
+        string cella;
         int counter = 0;
-       
+        f.open(inpfile);
 
-        if (f.is_open()) {
-            while (getline(f, sor, sep)) {
+        
+            while (getline(f, cella, sep)) {
                 counter++;
 
             }
-        }
-        else cout << "Could not open the file\n";
+        
         vector<string> tmp(counter);
 
     }
@@ -288,7 +277,7 @@ public:
         out.close();
     }
 };
-int main()
+int main(int argc, char** argv)
 {
     fuggvenyek fv;
     string input;
@@ -302,10 +291,10 @@ int main()
         cout << "insert N rows/cols before/after X/Y\n";
         cout << "exit\n";
         getline(cin, input);
+        
 
-        if (input.find("print") != string::npos) {
-            fv.print();
-        }
+        
+        
         //edit
 
 
@@ -412,9 +401,10 @@ int main()
                 word.erase(std::remove_if(word.begin(), word.end(), ispunct), word.end());
                 words.push_back(word);
             }
-            string file = words[2];
-            string sep1 = words[3];
+            string file = words[1];
+            
             if (input.find("-sep") != string::npos) {
+                string sep1 = words[2];
                 char char_array[1];
                 strcpy_s(char_array, sep1.c_str());
                 sep = char_array[0];
@@ -443,7 +433,9 @@ int main()
             
             fv.CSV_save(file, sep);
         }
-        
+
+       
+
     }
     cout << "Terminated";
     return 0;
