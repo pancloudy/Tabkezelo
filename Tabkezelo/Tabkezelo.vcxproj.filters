@@ -22,4 +22,8 @@
   <ItemGroup>
     <None Include="table.csv" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="input.txt" />
+    <Text Include="expected_output.txt" />
+  </ItemGroup>
 </Project>

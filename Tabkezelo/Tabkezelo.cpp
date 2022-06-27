@@ -246,20 +246,51 @@ public:
 
     }
     void CSV_read(string inpfile, char sep) {
-        ifstream f;
-        string cella;
-        int counter = 0;
-        f.open(inpfile);
+        cells.clear();
+        vector<string> row;
+        string line, word;
+        int icounter = 0;
+        int jcounter = 0;
+        int jmax = 0;
 
-        
-            while (getline(f, cella, sep)) {
-                counter++;
+        fstream file(inpfile, ios::in);
+        if (file.is_open())
+        {
+            while (getline(file, line))
+            {
+                jcounter = row.size();
+                if (jcounter > jmax) {
+                    jmax = jcounter;
 
+                }
+                row.clear();
+                icounter++;
+                stringstream str(line);
+
+                while (getline(str, word, sep))
+                    row.push_back(word);
+                cells.push_back(row);
+                jcounter++;
             }
-        
-        vector<string> tmp(counter);
+        }
+        else
+            cout << "Could not open the file\n";
 
+        rowCount += icounter-1;
+        cells.resize(rowCount);
+        colCount += jmax-1;
+        for (int i = 0; i < cells.size(); i++)
+        {
+            cells[i].resize(colCount);
+
+        }
+
+
+        print();
     }
+        
+
+    
 
     void CSV_save(string filename, char sep) {
         ofstream out;
@@ -284,12 +315,12 @@ int main(int argc, char** argv)
     fv.print();
     while (input != "exit")
     {
-        cout << "Available commands:\n";
+        /*cout << "Available commands:\n";
         cout << "edit XY\n";
         cout << "add N rows/cols\n";
         cout << "delete X/Y\n";
         cout << "insert N rows/cols before/after X/Y\n";
-        cout << "exit\n";
+        cout << "exit\n";*/
         getline(cin, input);
         
 
@@ -398,7 +429,7 @@ int main(int argc, char** argv)
             stringstream sstream(input);
             string word;
             while (getline(sstream, word, space_char)) {
-                word.erase(std::remove_if(word.begin(), word.end(), ispunct), word.end());
+               // word.erase(std::remove_if(word.begin(), word.end()), word.end());
                 words.push_back(word);
             }
             string file = words[1];
