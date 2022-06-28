@@ -330,6 +330,13 @@ public:
         out.close();
     }
 
+    void Swap(int x1, int y1, int  x2, int y2) {
+        string temp;
+        temp = cells[y1-1][x1];
+        cells[y1-1][x1] = cells[y2-1][x2];
+        cells[y2-1][x2] = temp;
+        print();
+    }
 
     void Align(int x, int y, string direction) {
         if (direction == "left") {
