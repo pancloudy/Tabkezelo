@@ -13,12 +13,15 @@ class fuggvenyek {
 public:
     int rowCount, colCount;
     vector<vector<string> > cells;
+    vector<vector<string> > alignment;
     vector<vector<string>::iterator > it;
     fuggvenyek() {
         this->rowCount = 1;
         this->colCount = 1;
         this->cells.resize(rowCount, vector<string>(colCount));
+        this->alignment.resize(rowCount, vector<string>(colCount));
         cells[0][0] = " ";
+        alignment[0][0] = " ";
 
     }
     void print()
@@ -81,17 +84,26 @@ public:
             {
                 if (j == 0) {
                     if (cells[i][j].length() != biggest) {
+                        
                         seged = biggest+1 - cells[i][j].length();
                     }
                     else seged = 0;
-                    cout << cells[i][j] << setw(seged);
+                    alg();
+                    if (alignment[i][j] == "right") {
+                        cout << setw(seged) << cells[i][j];
+                    }
+                    else cout << cells[i][j] << setw(seged);
                 }
                 else {
                     if (cells[i][j].length() != biggest) {
                         seged = biggest+1 - cells[i][j].length();
                     }
                     else seged = 0;
-                    cout << "|" << cells[i][j] << setw(seged);
+                    alg();
+                    if (alignment[i][j] == "right") {
+                        cout << "|" << setw(seged) << cells[i][j];
+                    }
+                    else cout << "|" << cells[i][j] << setw(seged);
                 }
             }
             cout << "|" << '\n';
@@ -103,17 +115,32 @@ public:
             
         }
     }
-    /*void beker() {
-        cin.ignore();
-        for (int i = 0; i < colCount; i++)
+
+
+    void alg() {
+        //alignment.resize( rowCount, vector<string>(colCount));
+        alignment.resize(rowCount);
+        for (int i = 0; i < cells.size(); i++)
         {
-            for (int j = 0; j < rowCount; j++)
-            {
-                cout << "Add meg a(z) " << i + 1 << ". " << j + 1 << ".elemet: ";
-                getline(cin, cells[i][j]);
-            }
+            alignment[i].resize(colCount);
+
         }
-    }*/
+        for (int i = 0; i < rowCount; i++)
+        {
+            for (int j = 1; j < colCount; j++)
+            {
+                if (alignment[i][j] == "") {
+                    alignment[i][j] = "left";
+                   
+                 }
+                
+            }
+            
+
+        }
+    }
+
+   
     void delRows(int inp) {
 
         if (cells.size() > inp)
@@ -121,13 +148,6 @@ public:
             cells.erase(cells.begin() + inp - 1);
             rowCount--;
         }
-
-        /*for (int i = 0; i < cells.size(); i++) {
-            if (i == inp) {
-                cells.erase(cells.begin() + i);
-                i--;
-            }
-        }*/
         print();
     }
     void delCols(char inp) {
@@ -136,6 +156,7 @@ public:
         for (unsigned i = 0; i < cells.size(); ++i) {
             if (cells[i].size() > col) {
                 cells[i].erase(cells[i].begin() + col);
+
             }
         }
         colCount--;
@@ -147,6 +168,7 @@ public:
         int oldRowCount = rowCount;
         rowCount += newRowCount;
         cells.resize(rowCount);
+
         for (int i = oldRowCount; i < cells.size(); i++) {
             for (int j = 0; j < colCount; j++)
             {
@@ -178,6 +200,7 @@ public:
             }
         }
         print();
+
     }
     void edit(int x, int y, string inp) {
         cells[y - 1][x] = inp;
@@ -242,11 +265,13 @@ public:
     }
     void CSV_read(string inpfile, char sep) {
         cells.clear();
+        alignment.clear();
         vector<string> row;
         string line, word;
         int icounter = 0;
         int jcounter = 0;
         int jmax = 0;
+
 
         fstream file(inpfile, ios::in);
         if (file.is_open())
@@ -264,6 +289,7 @@ public:
 
                 while (getline(str, word, sep))
                     row.push_back(word);
+
                 cells.push_back(row);
                 jcounter++;
             }
@@ -273,6 +299,7 @@ public:
 
         rowCount += icounter-1;
         cells.resize(rowCount);
+        
         colCount += jmax-1;
         for (int i = 0; i < cells.size(); i++)
         {
@@ -302,6 +329,18 @@ public:
         }
         out.close();
     }
+
+
+    void Align(int x, int y, string direction) {
+        if (direction == "left") {
+            alignment[x-1][y] = "left";
+        }
+        else {
+            alignment[x-1][y] = "right";
+        }
+        
+    }
+
 };
 int main(int argc, char** argv)
 {
@@ -326,12 +365,7 @@ int main(int argc, char** argv)
 
 
         if (input.find("edit") != string::npos) {
-            string xstring = input.substr(5);
-            string ystring = input.substr(6);
-            char l = toupper(xstring[0]);
-            int truex = char(l - 65);
-
-            int y = stoi(ystring);
+            
 
             char space_char = ' ';
             vector<string> words{};
@@ -343,7 +377,12 @@ int main(int argc, char** argv)
             }
             string inp = words[2];
             if (words.size() == 3) {
-                
+                string xstring = input.substr(5);
+                string ystring = input.substr(6);
+                char l = toupper(xstring[0]);
+                int truex = char(l - 65);
+
+                int y = stoi(ystring);
                 fv.edit(truex, y, inp);
             }
             else cout << "error\n";
@@ -356,8 +395,7 @@ int main(int argc, char** argv)
 
 
         if (input.find("add") != string::npos) {
-            string strnumber = input.substr(4);
-            int number = stoi(strnumber);
+           
 
             char space_char = ' ';
             vector<string> words{};
@@ -369,6 +407,8 @@ int main(int argc, char** argv)
 
 
             if (words.size() == 3) {
+                string strnumber = input.substr(4);
+                int number = stoi(strnumber);
                 if (input.find("rows") != string::npos) {
                     fv.newRows(number);
                 }
@@ -417,11 +457,7 @@ int main(int argc, char** argv)
 
 
         if (input.find("insert") != string::npos) {
-            string strnumber = input.substr(7);
-            string XOrY;
-            char sep = ';';
-            bool isbefore;
-            int number = stoi(strnumber);
+            
 
             char space_char = ' ';
             vector<string> words{};
@@ -433,7 +469,11 @@ int main(int argc, char** argv)
 
 
             if (words.size() == 5) {
-
+                string strnumber = input.substr(7);
+                string XOrY;
+                char sep = ';';
+                bool isbefore;
+                int number = stoi(strnumber);
 
                 if (input.find("before") != string::npos) {
                     isbefore = true;
@@ -521,6 +561,61 @@ int main(int argc, char** argv)
             }
             
             
+        }
+
+
+        //sort
+
+        if (input.find("sort") != string::npos) {
+
+        }
+
+        //swap
+
+
+
+        //align
+
+
+        if (input.find("align") != string::npos) {
+
+            if (input.find(":") != string::npos) {
+
+            }
+            else {
+               
+
+
+                char space_char = ' ';
+                vector<string> words{};
+                stringstream sstream(input);
+                string word;
+                while (getline(sstream, word, space_char)) {
+
+                    words.push_back(word);
+                }
+                
+                if (words.size() == 3) {
+                    string xstring = input.substr(6);
+                    string ystring = input.substr(7);
+                    char l = toupper(xstring[0]);
+                    int y = char(l - 65);
+
+                    int x = stoi(ystring);
+                    if (words[2] == "left") {
+                        fv.Align(x, y, words[2]);
+                        fv.print();
+                    }
+                    if (words[2] == "right") {
+                        fv.Align(x, y, words[2]);
+                        fv.print();
+                    }
+                    else cout << "error\n";
+                }
+                else cout << "error\n";
+            }
+            
+
         }
 
        
