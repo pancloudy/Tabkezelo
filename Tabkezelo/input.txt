@@ -1,9 +1,8 @@
-open table.csv
+./prog table.csv
 add 5 rows
 add 5 cols
 delete D
 insert 2 cols after B
 insert 2 rows before 3
-edit c5 ok
-close 0
+edit C5 ok
 exit

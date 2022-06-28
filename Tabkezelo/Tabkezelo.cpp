@@ -180,11 +180,7 @@ public:
         }
         print();
     }
-    void edit(int x, int y) {
-
-        string inp;
-        cout << "Adja meg az adatot amire megakarja valtoztatni: \n";
-        getline(cin, inp);
+    void edit(int x, int y, string inp) {
         cells[y - 1][x] = inp;
         print();
     }
@@ -333,12 +329,21 @@ int main(int argc, char** argv)
         if (input.find("edit") != string::npos) {
             string xstring = input.substr(5);
             string ystring = input.substr(6);
-            char l = xstring[0];
+            char l = toupper(xstring[0]);
             int truex = char(l - 65);
 
             int y = stoi(ystring);
-            //cout << ystring;
-            fv.edit(truex, y);
+
+            char space_char = ' ';
+            vector<string> words{};
+            stringstream sstream(input);
+            string word;
+            while (getline(sstream, word, space_char)) {
+
+                words.push_back(word);
+            }
+            string inp = words[2];
+            fv.edit(truex, y, inp);
             //fv.print();
         }
 
@@ -429,7 +434,6 @@ int main(int argc, char** argv)
             stringstream sstream(input);
             string word;
             while (getline(sstream, word, space_char)) {
-               // word.erase(std::remove_if(word.begin(), word.end()), word.end());
                 words.push_back(word);
             }
             string file = words[1];
@@ -456,7 +460,6 @@ int main(int argc, char** argv)
                 sep = input.back();
             }
             while (getline(sstream, word, space_char)) {
-               // word.erase(std::remove_if(word.begin(), word.end()), word.end());
                 words.push_back(word);
             }
             string file = words[1];

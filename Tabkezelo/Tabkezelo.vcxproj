@@ -142,6 +142,7 @@
     <ClCompile Include="Tabkezelo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="run_test.sh" />
     <None Include="table.csv" />
   </ItemGroup>
   <ItemGroup>

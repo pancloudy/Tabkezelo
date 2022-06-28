@@ -21,6 +21,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="table.csv" />
+    <None Include="run_test.sh" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="input.txt" />
