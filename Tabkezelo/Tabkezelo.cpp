@@ -572,6 +572,36 @@ int main(int argc, char** argv)
 
         //swap
 
+        if (input.find("swap") != string::npos) {
+            
+
+            char space_char = ' ';
+            vector<string> words{};
+            stringstream sstream(input);
+            string word;
+            while (getline(sstream, word, space_char)) {
+
+                words.push_back(word);
+            }
+            if (words.size() == 3) {
+	    string xstring = input.substr(5);
+            string ystring = input.substr(6);
+            string xstring2 = input.substr(8);
+            string ystring2 = input.substr(9);
+
+            char l = toupper(xstring[0]);
+            char l2 = toupper(xstring2[0]);
+            int x1 = char(l - 65);
+            int x2 = char(l2 - 65);
+
+            int y1 = stoi(ystring);
+            int y2 = stoi(ystring2);
+                fv.Swap(x1,y1,x2,y2);
+                
+            }
+            else cout << "error\n";
+        }
+
 
 
         //align
