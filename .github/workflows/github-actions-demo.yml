@@ -5,6 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run input and output tests
-        run: bash run_test.sh main generated_output.txt
+        run: bash Tabkezelo/run_test.sh main generated_output.txt
       - name: Check results of input-output tests
-        run: diff ./generated_output.txt ./expected_output.txt
+        run: diff Tabkezelo/generated_output.txt Tabkezelo/expected_output.txt
