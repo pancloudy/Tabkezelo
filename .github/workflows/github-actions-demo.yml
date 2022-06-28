@@ -6,6 +6,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run input and output tests
-        run: bash ../run_test.sh main generated_output.txt
+        run: bash run_test.sh main generated_output.txt
       - name: Check results of input-output tests
         run: diff ./generated_output.txt ./expected_output.txt
