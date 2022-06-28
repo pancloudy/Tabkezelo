@@ -130,10 +130,9 @@ public:
         }*/
         print();
     }
-    void delCols(string inp) {
-        char l = inp[0];
+    void delCols(char inp) {
+        char l = inp;
         int col = char(l - 65);
-        cout << col;
         for (unsigned i = 0; i < cells.size(); ++i) {
             if (cells[i].size() > col) {
                 cells[i].erase(cells[i].begin() + col);
@@ -343,7 +342,11 @@ int main(int argc, char** argv)
                 words.push_back(word);
             }
             string inp = words[2];
-            fv.edit(truex, y, inp);
+            if (words.size() == 3) {
+                
+                fv.edit(truex, y, inp);
+            }
+            else cout << "error\n";
             //fv.print();
         }
 
@@ -355,13 +358,26 @@ int main(int argc, char** argv)
         if (input.find("add") != string::npos) {
             string strnumber = input.substr(4);
             int number = stoi(strnumber);
-            if (input.find("rows") != string::npos) {
-                fv.newRows(number);
+
+            char space_char = ' ';
+            vector<string> words{};
+            stringstream sstream(input);
+            string word;
+            while (getline(sstream, word, space_char)) {
+                words.push_back(word);
             }
-            if (input.find("cols") != string::npos) {
-                fv.newCols(number);
+
+
+            if (words.size() == 3) {
+                if (input.find("rows") != string::npos) {
+                    fv.newRows(number);
+                }
+                if (input.find("cols") != string::npos) {
+                    fv.newCols(number);
+                }
+                //fv.print();
             }
-            //fv.print();
+            else cout << "error\n";
         }
 
 
@@ -370,16 +386,29 @@ int main(int argc, char** argv)
 
 
         if (input.find("delete") != string::npos) {
-            string ColOrRow = input.substr(7);
 
-            if (isdigit(ColOrRow[0])) {
-                int number = stoi(ColOrRow);
+            char space_char = ' ';
+            vector<string> words{};
+            stringstream sstream(input);
+            string word;
+            while (getline(sstream, word, space_char)) {
+                words.push_back(word);
+            }
 
-                fv.delRows(number);
+
+            if (words.size() == 2) {
+                string ColOrRow = input.substr(7);
+                if (isdigit(ColOrRow[0])) {
+                    int number = stoi(ColOrRow);
+
+                    fv.delRows(number);
+                }
+                else {
+                    
+                    fv.delCols(toupper(ColOrRow[0]));
+                }
             }
-            else {
-                fv.delCols(ColOrRow);
-            }
+            else cout << "error\n";
         }
 
 
@@ -394,34 +423,47 @@ int main(int argc, char** argv)
             bool isbefore;
             int number = stoi(strnumber);
 
-            if (input.find("before") != string::npos) {
-                isbefore = true;
-                //XOrY = input.substr(21);
-                XOrY = input.back();
-                if (isdigit(XOrY[0])) {
-                    int col = stoi(XOrY);
-
-                    fv.newRowsBA(number, isbefore, col);
-                }
-                else {
-                    char col2 = XOrY[0];
-                    fv.newColsBA(number, isbefore, col2);
-                }
-            }
-            if (input.find("after") != string::npos) {
-                isbefore = false;
-                //XOrY = input.substr(20);
-                XOrY = input.back();
-                if (isdigit(XOrY[0])) {
-                    int col = stoi(XOrY);
-                    fv.newRowsBA(number, isbefore, col);
-                }
-                else {
-                    char col2 = XOrY[0];
-                    fv.newColsBA(number, isbefore, col2);
-                }
+            char space_char = ' ';
+            vector<string> words{};
+            stringstream sstream(input);
+            string word;
+            while (getline(sstream, word, space_char)) {
+                words.push_back(word);
             }
 
+
+            if (words.size() == 5) {
+
+
+                if (input.find("before") != string::npos) {
+                    isbefore = true;
+                    //XOrY = input.substr(21);
+                    XOrY = input.back();
+                    if (isdigit(XOrY[0])) {
+                        int col = stoi(XOrY);
+
+                        fv.newRowsBA(number, isbefore, col);
+                    }
+                    else {
+                        char col2 = XOrY[0];
+                        fv.newColsBA(number, isbefore, col2);
+                    }
+                }
+                if (input.find("after") != string::npos) {
+                    isbefore = false;
+                    //XOrY = input.substr(20);
+                    XOrY = input.back();
+                    if (isdigit(XOrY[0])) {
+                        int col = stoi(XOrY);
+                        fv.newRowsBA(number, isbefore, col);
+                    }
+                    else {
+                        char col2 = XOrY[0];
+                        fv.newColsBA(number, isbefore, col2);
+                    }
+                }
+            }
+            else cout << "error\n";
 
         }
 
@@ -437,35 +479,48 @@ int main(int argc, char** argv)
                 words.push_back(word);
             }
             string file = words[1];
-            
-            if (input.find("-sep") != string::npos) {
-                string sep1 = words[2];
-                char char_array[1];
-                strcpy_s(char_array, sep1.c_str());
-                sep = char_array[0];
-                fv.CSV_read(file, sep);
+            if (words.size() == 2 || words.size() == 4) {
+                if (input.find("-sep") != string::npos) {
+                    string sep1 = words[2];
+                    char char_array[1];
+                    strcpy_s(char_array, sep1.c_str());
+                    sep = char_array[0];
+                    fv.CSV_read(file, sep);
+                }
+                else {
+                    fv.CSV_read(file, sep);
+                }
             }
-            else {
-                fv.CSV_read(file, sep);
-            }
+            else cout << "error\n";
 
         }
         if (input.find("save") != string::npos) {
+            int maxattr = 2;
+            
             char sep = ';';
             char space_char = ' ';
             vector<string> words{};
             stringstream sstream(input);
             string word;
-            if (input.find("-sep") != string::npos) {
-                sep = input.back();
-            }
             while (getline(sstream, word, space_char)) {
                 words.push_back(word);
             }
-            string file = words[1];
+            if (words.size() == 2 || words.size() == 4) {
+                if (input.find("-sep") != string::npos) {
+                    sep = input.back();
+                }
+                string file = words[1];
+
+
+                fv.CSV_save(file, sep);
+            }
+            else{
+
+                cout << "error\n";
+                
+            }
             
             
-            fv.CSV_save(file, sep);
         }
 
        
