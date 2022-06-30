@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the application
-        run : make
+        run : make build
       - name: Convert files
         run: sed -i 's/\r//g' ./run_test.sh
       - name: Run input and output tests
