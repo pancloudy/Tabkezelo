@@ -7,7 +7,14 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build the application
         run : make
+      - name: Convert files
+        run: sed -i 's/\r//g' ./run_test.sh
       - name: Run input and output tests
         run: bash run_test.sh Tabkezelo/Tabkezelo generated_output.txt
       - name: Check results of input-output tests
         run: diff generated_output.txt expected_output.txt
+      - name: Upload generated output
+        uses: actions/upload-artifact@v2
+        with:
+          name: generated_output
+          path: generated_output.txt
