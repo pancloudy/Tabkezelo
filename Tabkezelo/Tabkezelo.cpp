@@ -6,6 +6,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -338,6 +339,29 @@ public:
         print();
     }
 
+    void RowSort(string rows, string ascod) {
+        int row = stoi(rows);
+        if (ascod == "asc") {
+            /*for (int i = 0;i < rowCount;i++) {
+                for (int j = 0;j < rowCount;i++) {
+
+                }
+            }*/
+
+        }
+        else {
+
+        }
+    }
+    void ColSort(string col, string ascod) {
+        if (ascod == "asc") {
+            std::sort(cells.begin(), cells.end());
+        }
+        else {
+
+        }
+    }
+
     void Align(int x, int y, string direction) {
         if (direction == "left") {
             alignment[x-1][y] = "left";
@@ -383,14 +407,20 @@ int main(int argc, char** argv)
                 words.push_back(word);
             }
             string inp = words[2];
+            string ystring = input.substr(6);
             if (words.size() == 3) {
-                string xstring = input.substr(5);
-                string ystring = input.substr(6);
-                char l = toupper(xstring[0]);
-                int truex = char(l - 65);
+                if (isdigit(ystring[0])) {
 
-                int y = stoi(ystring);
-                fv.edit(truex, y, inp);
+
+                    string xstring = input.substr(5);
+
+                    char l = toupper(xstring[0]);
+                    int truex = char(l - 65);
+
+                    int y = stoi(ystring);
+                    fv.edit(truex, y, inp);
+                }
+                else cout << "error\n";
             }
             else cout << "error\n";
             //fv.print();
@@ -412,17 +442,20 @@ int main(int argc, char** argv)
                 words.push_back(word);
             }
 
-
+            string strnumber = input.substr(4);
             if (words.size() == 3) {
-                string strnumber = input.substr(4);
-                int number = stoi(strnumber);
-                if (input.find("rows") != string::npos) {
-                    fv.newRows(number);
+                if (isdigit(strnumber[0])) {
+
+
+                    int number = stoi(strnumber);
+                    if (input.find("rows") != string::npos) {
+                        fv.newRows(number);
+                    }
+                    if (input.find("cols") != string::npos) {
+                        fv.newCols(number);
+                    }
                 }
-                if (input.find("cols") != string::npos) {
-                    fv.newCols(number);
-                }
-                //fv.print();
+                else cout << "error\n";
             }
             else cout << "error\n";
         }
@@ -441,7 +474,6 @@ int main(int argc, char** argv)
             while (getline(sstream, word, space_char)) {
                 words.push_back(word);
             }
-
 
             if (words.size() == 2) {
                 string ColOrRow = input.substr(7);
@@ -477,38 +509,43 @@ int main(int argc, char** argv)
 
             if (words.size() == 5) {
                 string strnumber = input.substr(7);
-                string XOrY;
-                char sep = ';';
-                bool isbefore;
-                int number = stoi(strnumber);
+                if (isdigit(strnumber[0])) {
 
-                if (input.find("before") != string::npos) {
-                    isbefore = true;
-                    //XOrY = input.substr(21);
-                    XOrY = input.back();
-                    if (isdigit(XOrY[0])) {
-                        int col = stoi(XOrY);
 
-                        fv.newRowsBA(number, isbefore, col);
+                    string XOrY;
+                    char sep = ';';
+                    bool isbefore;
+                    int number = stoi(strnumber);
+
+                    if (input.find("before") != string::npos) {
+                        isbefore = true;
+                        //XOrY = input.substr(21);
+                        XOrY = input.back();
+                        if (isdigit(XOrY[0])) {
+                            int col = stoi(XOrY);
+
+                            fv.newRowsBA(number, isbefore, col);
+                        }
+                        else {
+                            char col2 = XOrY[0];
+                            fv.newColsBA(number, isbefore, col2);
+                        }
                     }
-                    else {
-                        char col2 = XOrY[0];
-                        fv.newColsBA(number, isbefore, col2);
+                    if (input.find("after") != string::npos) {
+                        isbefore = false;
+                        //XOrY = input.substr(20);
+                        XOrY = input.back();
+                        if (isdigit(XOrY[0])) {
+                            int col = stoi(XOrY);
+                            fv.newRowsBA(number, isbefore, col);
+                        }
+                        else {
+                            char col2 = XOrY[0];
+                            fv.newColsBA(number, isbefore, col2);
+                        }
                     }
                 }
-                if (input.find("after") != string::npos) {
-                    isbefore = false;
-                    //XOrY = input.substr(20);
-                    XOrY = input.back();
-                    if (isdigit(XOrY[0])) {
-                        int col = stoi(XOrY);
-                        fv.newRowsBA(number, isbefore, col);
-                    }
-                    else {
-                        char col2 = XOrY[0];
-                        fv.newColsBA(number, isbefore, col2);
-                    }
-                }
+                else cout << "error";
             }
             else cout << "error\n";
 
@@ -574,7 +611,31 @@ int main(int argc, char** argv)
         //sort
 
         if (input.find("sort") != string::npos) {
+            char space_char = ' ';
+            vector<string> words{};
+            stringstream sstream(input);
+            string word;
+            while (getline(sstream, word, space_char)) {
+                words.push_back(word);
+            }
 
+            string xory = words[3];
+            
+            if (words.size() == 3) {
+                if (isdigit(xory[0])) {
+                    fv.RowSort(xory, "asc");
+                }
+                else fv.ColSort(xory, "asc");
+            }
+            if (words.size() == 4) {
+                string ascOrdesc = words[4];
+                
+                if (isdigit(xory[0])) {
+                    fv.RowSort(xory, ascOrdesc);
+                }
+                else fv.ColSort(xory, ascOrdesc);
+            }
+            else cout << "error\n";
         }
 
         //swap
@@ -590,23 +651,31 @@ int main(int argc, char** argv)
 
                 words.push_back(word);
             }
+            string check = input.substr(6);
+            string check2 = input.substr(9);
             if (words.size() == 3) {
-	    string xstring = input.substr(5);
-            string ystring = input.substr(6);
-            string xstring2 = input.substr(8);
-            string ystring2 = input.substr(9);
+                if (isdigit(check[0]) && isdigit(check2[0])) {
 
-            char l = toupper(xstring[0]);
-            char l2 = toupper(xstring2[0]);
-            int x1 = char(l - 65);
-            int x2 = char(l2 - 65);
 
-            int y1 = stoi(ystring);
-            int y2 = stoi(ystring2);
-                fv.Swap(x1,y1,x2,y2);
-                
+                    string xstring = input.substr(5);
+                    string ystring = input.substr(6);
+                    string xstring2 = input.substr(8);
+                    string ystring2 = input.substr(9);
+
+                    char l = toupper(xstring[0]);
+                    char l2 = toupper(xstring2[0]);
+                    int x1 = char(l - 65);
+                    int x2 = char(l2 - 65);
+
+                    int y1 = stoi(ystring);
+                    int y2 = stoi(ystring2);
+                    fv.Swap(x1, y1, x2, y2);
+
+                }
+                else cout << "error\n";
             }
-            else cout << "error\n";
+                else cout << "error\n";
+            
         }
 
 
@@ -631,21 +700,26 @@ int main(int argc, char** argv)
 
                     words.push_back(word);
                 }
-                
+                string check = input.substr(7);
                 if (words.size() == 3) {
-                    string xstring = input.substr(6);
-                    string ystring = input.substr(7);
-                    char l = toupper(xstring[0]);
-                    int y = char(l - 65);
+                    if (isdigit(check[0])) {
 
-                    int x = stoi(ystring);
-                    if (words[2] == "left") {
-                        fv.Align(x, y, words[2]);
-                        fv.print();
-                    }
-                    if (words[2] == "right") {
-                        fv.Align(x, y, words[2]);
-                        fv.print();
+
+                        string xstring = input.substr(6);
+                        string ystring = input.substr(7);
+                        char l = toupper(xstring[0]);
+                        int y = char(l - 65);
+
+                        int x = stoi(ystring);
+                        if (words[2] == "left") {
+                            fv.Align(x, y, words[2]);
+                            fv.print();
+                        }
+                        if (words[2] == "right") {
+                            fv.Align(x, y, words[2]);
+                            fv.print();
+                        }
+                        else cout << "error\n";
                     }
                     else cout << "error\n";
                 }
