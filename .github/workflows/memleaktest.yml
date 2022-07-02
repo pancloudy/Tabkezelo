@@ -11,8 +11,8 @@ jobs:
       - uses: actions/checkout@main
       - run: sudo apt install valgrind
       - name: g++
-        run: g++ -g Tabkezelo/Tabkezelo.cpp -o Tabkezelo
-      - name: chmod Tabkezelo
-        run: chmod +x Tabkezelo
+        run: g++ -g Tabkezelo/Tabkezelo.cpp -o tab
+      - name: chmod tab
+        run: chmod +x tab
       - name: leak test
-        run: valgrind --leak-check=full --show-leak-kinds=all --error-exitcode=1 --track-origins=yes -s ./Tabkezelo < input.txt
+        run: valgrind --leak-check=full --show-leak-kinds=all --error-exitcode=1 --track-origins=yes -s ./tab < input.txt
