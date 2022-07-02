@@ -568,7 +568,7 @@ int main(int argc, char** argv)
                 if (input.find("-sep") != string::npos) {
                     string sep1 = words[2];
                     char char_array[1];
-                    strcpy_tm(char_array, sep1.c_str());
+                    strcpy(char_array, sep1.c_str());
                     sep = char_array[0];
                     fv.CSV_read(file, sep);
                 }
