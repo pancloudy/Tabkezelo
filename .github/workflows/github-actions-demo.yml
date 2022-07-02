@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the application
-        run : make build
+        run: g++ -std=c++17 source/*.cpp -o test/output.out
       - name: Convert files
         run: sed -i 's/\r//g' ./run_test.sh
       - name: Run input and output tests
