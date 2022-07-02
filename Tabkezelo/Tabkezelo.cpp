@@ -39,7 +39,7 @@ public:
                 }
             }
         }
-
+    
         cout << setw(5);
         for (int i = 0; i < colCount; i++) {
             if (i == 0) {
@@ -142,6 +142,11 @@ public:
         }
     }
 
+/**
+ * @brief 
+ * DelRows function
+ * @param inp 
+ */
    
     void delRows(int inp) {
 
@@ -152,6 +157,13 @@ public:
         }
         print();
     }
+
+/**
+ * @brief 
+ * DelCols function
+ * @param inp 
+ */
+
     void delCols(char inp) {
         char l = inp;
         int col = char(l - 65);
@@ -429,7 +441,10 @@ int main(int argc, char** argv)
 
 
         //add
-
+/**
+ * @brief 
+ * Add function
+ */
 
 
         if (input.find("add") != string::npos) {
@@ -490,10 +505,10 @@ int main(int argc, char** argv)
             }
             else cout << "error\n";
         }
-
-
-        //insert
-
+/**
+ * @brief 
+ * Insert function
+ */
 
 
         if (input.find("insert") != string::npos) {
@@ -611,6 +626,11 @@ int main(int argc, char** argv)
 
         //sort
 
+/**
+ * @brief 
+ * Sort function
+ */
+
         if (input.find("sort") != string::npos) {
             char space_char = ' ';
             vector<string> words{};
@@ -640,6 +660,10 @@ int main(int argc, char** argv)
         }
 
         //swap
+/**
+ * @brief 
+ * Swap function
+ */
 
         if (input.find("swap") != string::npos) {
             
@@ -730,9 +754,8 @@ int main(int argc, char** argv)
 
         }
 
-       
-
     }
+    
     cout << "Terminated";
     return 0;
 }
